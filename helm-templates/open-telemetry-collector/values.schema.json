@@ -1,0 +1,220 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "title": "The open-telemetry-collector schema prototype",
+  "description": "The JSON schema prototype for open-telemetry-collector",
+  "default": {},
+  "examples": [
+  ],
+  "definitions": {
+    "integerOrString": {
+      "anyOf": [
+        { "type": "integer" },
+        { "type": "string" }
+      ]
+    }
+  },
+  "properties": {
+    "HPA_AVG_CPU_UTILIZATION_TARGET_PERCENT": {
+        "$id": "#/properties/HPA_AVG_CPU_UTILIZATION_TARGET_PERCENT",
+        "description": "Target average CPU utilization for horizontal pod autoscaling",
+        "envSpecific": true,
+        "examples": [
+            75
+        ],
+        "internal": true,
+        "title": "The HPA_AVG_CPU_UTILIZATION_TARGET_PERCENT scheme",
+        "type": "integer"
+    },
+    "HPA_ENABLED": {
+        "$id": "#/properties/HPA_ENABLED",
+        "description": "Defines whether horizontal autoscaling enabled for microservice",
+        "envSpecific": true,
+        "internal": true,
+        "title": "The HPA_ENABLED scheme",
+        "type": "boolean"
+    },
+    "HPA_MAX_REPLICAS": {
+        "$id": "#/properties/HPA_MAX_REPLICAS",
+        "description": "Defines the upper limit for the number of replicas to which the autoscaler can scale up. It cannot be less that HPA_MIN_REPLICAS.",
+        "envSpecific": true,
+        "internal": true,
+        "title": "The HPA_MAX_REPLICAS scheme",
+        "type": "integer"
+    },
+    "HPA_MIN_REPLICAS": {
+        "$id": "#/properties/HPA_MIN_REPLICAS",
+        "description": "Defines the lower limit for the number of replicas to which the autoscaler can scale down",
+        "envSpecific": true,
+        "internal": true,
+        "title": "The HPA_MIN_REPLICAS scheme",
+        "type": "integer"
+    },
+    "HPA_SCALING_DOWN_PERCENT_PERIOD_SECONDS": {
+        "$id": "#/properties/HPA_SCALING_DOWN_PERCENT_PERIOD_SECONDS",
+        "description": "Defines behavior.scaleDown.policies[].periodSeconds property in HPA resource for Percent type",
+        "envSpecific": true,
+        "examples": [
+            60
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_DOWN_PERCENT_PERIOD_SECONDS scheme",
+        "type": "integer"
+    },
+    "HPA_SCALING_DOWN_PERCENT_VALUE": {
+        "$id": "#/properties/HPA_SCALING_DOWN_PERCENT_VALUE",
+        "description": "Defines behavior.scaleDown.policies[].value property in HPA resource for Percent type",
+        "envSpecific": true,
+        "examples": [
+            100
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_DOWN_PERCENT_VALUE scheme",
+        "type": "integer"
+    },
+    "HPA_SCALING_DOWN_PODS_PERIOD_SECONDS": {
+        "$id": "#/properties/HPA_SCALING_DOWN_PODS_PERIOD_SECONDS",
+        "description": "Defines behavior.scaleDown.policies[].periodSeconds property in HPA resource for Pods type",
+        "envSpecific": true,
+        "examples": [
+            60
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_DOWN_PODS_PERIOD_SECONDS scheme",
+        "type": "integer"
+    },
+    "HPA_SCALING_DOWN_PODS_VALUE": {
+        "$id": "#/properties/HPA_SCALING_DOWN_PODS_VALUE",
+        "description": "Defines behavior.scaleDown.policies[].value property in HPA resource for Pods type",
+        "envSpecific": true,
+        "examples": [
+            1
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_DOWN_PODS_VALUE scheme",
+        "type": "integer"
+    },
+    "HPA_SCALING_DOWN_SELECT_POLICY": {
+        "$id": "#/properties/HPA_SCALING_DOWN_SELECT_POLICY",
+        "description": "Defines behavior.scaleDown.selectPolicy property in HPA resource. Allowed values are: Min, Max, Disabled",
+        "enum": [
+            "Min",
+            "Max",
+            "Disabled"
+        ],
+        "envSpecific": true,
+        "examples": [
+            "Max"
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_DOWN_SELECT_POLICY scheme",
+        "type": "string"
+    },
+    "HPA_SCALING_DOWN_STABILIZATION_WINDOW_SECONDS": {
+        "$id": "#/properties/HPA_SCALING_DOWN_STABILIZATION_WINDOW_SECONDS",
+        "description": "Defines behavior.scaleDown.stabilizationWindowSeconds property in HPA resource",
+        "envSpecific": true,
+        "examples": [
+            300
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_DOWN_STABILIZATION_WINDOW_SECONDS scheme",
+        "type": "integer"
+    },
+    "HPA_SCALING_UP_PERCENT_PERIOD_SECONDS": {
+        "$id": "#/properties/HPA_SCALING_UP_PERCENT_PERIOD_SECONDS",
+        "description": "Defines behavior.scaleUp.policies[].periodSeconds property in HPA resource for Percent type",
+        "envSpecific": true,
+        "examples": [
+            60
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_UP_PERCENT_PERIOD_SECONDS scheme",
+        "type": "integer"
+    },
+    "HPA_SCALING_UP_PERCENT_VALUE": {
+        "$id": "#/properties/HPA_SCALING_UP_PERCENT_VALUE",
+        "description": "Defines behavior.scaleUp.policies[].value property in HPA resource for Percent type",
+        "envSpecific": true,
+        "examples": [
+            100
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_UP_PERCENT_VALUE scheme",
+        "type": "integer"
+    },
+    "HPA_SCALING_UP_PODS_PERIOD_SECONDS": {
+        "$id": "#/properties/HPA_SCALING_UP_PODS_PERIOD_SECONDS",
+        "description": "Defines behavior.scaleUp.policies[].periodSeconds property in HPA resource for Pods type",
+        "envSpecific": true,
+        "examples": [
+            60
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_UP_PODS_PERIOD_SECONDS scheme",
+        "type": "integer"
+    },
+    "HPA_SCALING_UP_PODS_VALUE": {
+        "$id": "#/properties/HPA_SCALING_UP_PODS_VALUE",
+        "description": "Defines behavior.scaleUp.policies[].value property in HPA resource for Pods type",
+        "envSpecific": true,
+        "examples": [
+            1
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_UP_PODS_VALUE scheme",
+        "type": "integer"
+    },
+    "HPA_SCALING_UP_SELECT_POLICY": {
+        "$id": "#/properties/HPA_SCALING_UP_SELECT_POLICY",
+        "description": "Defines behavior.scaleUp.selectPolicy property in HPA resource. Allowed values are: Min, Max, Disabled",
+        "enum": [
+            "Min",
+            "Max",
+            "Disabled"
+        ],
+        "envSpecific": true,
+        "examples": [
+            "Max"
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_UP_SELECT_POLICY scheme",
+        "type": "string"
+    },
+    "HPA_SCALING_UP_STABILIZATION_WINDOW_SECONDS": {
+        "$id": "#/properties/HPA_SCALING_UP_STABILIZATION_WINDOW_SECONDS",
+        "description": "Defines behavior.scaleUp.stabilizationWindowSeconds property in HPA resource",
+        "envSpecific": true,
+        "examples": [
+            60
+        ],
+        "internal": true,
+        "title": "The HPA_SCALING_UP_STABILIZATION_WINDOW_SECONDS scheme",
+        "type": "integer"
+    },
+    "CLOUD_TOPOLOGIES":
+    {
+        "$id": "#/properties/CLOUD_TOPOLOGIES",
+        "description": "Array of topologies settings for topologySpreadConstraints. Each array item must contain at least 'topologyKey' attribute. Other supported attributes are 'maxSkew' and 'whenUnsatisfiable' - optional.",
+        "examples":
+        [
+            "- topologyKey: kubernetes.io/hostname"
+        ],
+        "title": "The CLOUD_TOPOLOGIES schema",
+        "type": "array"
+    },
+    "CLOUD_TOPOLOGY_KEY":
+    {
+        "$id": "#/properties/CLOUD_TOPOLOGY_KEY",
+        "default": "kubernetes.io/hostname",
+        "description": "Defines topologyKey in topologySpreadConstraints",
+        "examples":
+        [
+            "kubernetes.io/hostname"
+        ],
+        "title": "The CLOUD_TOPOLOGY_KEY schema",
+        "type": "string"
+    }
+  },
+  "additionalProperties": true
+}
