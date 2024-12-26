@@ -1,0 +1,226 @@
+# Name of Opentelemetry Collector service.
+# Type: string
+# Default: open-telemetry-collector
+#
+SERVICE_NAME: open-telemetry-collector
+
+# Allows creating a service monitor that sends SPM metrics to prometheus.
+# Type: boolean
+# Default: false
+#
+MONITORING_ENABLED: false
+
+# Allows to enable ingress for receiving sentry envelopes
+# Type: boolean
+# Default: false
+#
+OTEC_SENTRY_ENVELOPES_INGRESS_ENABLED: false
+
+# Allows to set up custom ingress annotations
+# Type: map[string]string
+# Default: empty
+#
+OTEC_SENTRY_ENVELOPES_INGRESS_ANNOTATIONS: {}
+
+# Allows to set up sentry receiver parameters
+# Type: object
+# Default: empty
+#
+OTEC_SENTRY_RECEIVER_PARAMETERS: {}
+
+# Allows to set up setry event metrics parameters
+# Type: object
+# Default: empty
+#
+OTEC_SENTRY_EVENT_METRICS_PARAMETERS: {}
+
+# Allows to set up setry measurements metrics parameters
+# Type: object
+# Default: empty
+#
+OTEC_SENTRY_MEASUREMENTS_METRICS_PARAMETERS: {}
+
+# Allows to set up logtcpexporter parameters
+# Type: object
+# Default: see below
+#
+OTEC_LOGTCPEXPORTER_PARAMETERS:
+  connection-pool-size: 1
+  queue-size: 1024
+  max-message-send-retry-count: 1
+  max-successive-send-error-count: 5
+  successive-send-error-freeze-time: 1m
+
+# The resources describe to compute resource requests and limits for single Pods.
+# Ref: https://kubernetes.io/docs/user-guide/compute-resources/
+# Type: object
+# Mandatory: no
+# Default:
+resources: ''
+
+# Only pods which provide own keys can access the private registry.
+# Default: []
+#
+imagePullSecrets: []
+
+# Map of string keys and values that can be used to organize and categorize (scope and select) objects.
+# May match selectors of replication controllers and services.
+# More info: https://kubernetes.io/docs/user-guide/labels
+# Type: map[string]string
+# Mandatory: no
+# Default: not set
+#
+labels: {}
+#  label-key: label-value
+
+# Annotations is an unstructured key value map stored
+# with a resource that may be set by external tools to store and retrieve arbitrary metadata.
+# They are not queryable and should be preserved when modifying objects.
+# More info: https://kubernetes.io/docs/user-guide/annotations
+# Type: map[string]string
+# Mandatory: no
+# Default: not set
+#
+annotations: {}
+#  annotation-key: annotation-value
+
+# entrypoint is the path to the opentelemetry binary
+# Type: string
+# Mandatory: no
+# Default: /otec
+#
+entrypoint: "/otec"
+
+# JAEGER_COLLECTOR_HOST is the Jaeger hostname or ip
+# Type: string
+# Mandatory: no
+# Default: jaeger-app-collector.jaeger
+#
+JAEGER_COLLECTOR_HOST: ""
+
+# JAEGER_COLLECTOR_PORT is the port for the Jaeger service gRPC span reporting API
+# Type: string
+# Mandatory: no
+# Default: 14250
+#
+JAEGER_COLLECTOR_PORT: "14250"
+
+# JAEGER_COLLECTOR_OTLP_PORT is the port for the Jaeger service OpenTelemetry Protocol span reporting API
+# Type: string
+# Mandatory: no
+# Default: 4317
+#
+JAEGER_COLLECTOR_OTLP_PORT: "4317"
+
+# GRAYLOG_COLLECTOR_HOST is the Graylog hostname or ip
+# Type: string
+# Mandatory: no
+# Default: https://graylog-logging.${CLOUD_PUBLIC_HOST}
+#
+GRAYLOG_COLLECTOR_HOST: ""
+
+# GRAYLOG_COLLECTOR_PORT is the port for the Graylog service above
+# Type: string
+# Mandatory: no
+# Default: 12201
+#
+GRAYLOG_COLLECTOR_PORT: "12201"
+
+# CONFIG_MAP is the custom config-map for the open-telemetry-collector. If it is not set, the default one is used.
+# Type: Object
+# Mandatory: no
+# Default:
+#
+CONFIG_MAP: ''
+
+# SERVICE_PORTS is the customization for service.ports. If it is not set, the default ones are used.
+# Type: Object
+# Mandatory: no
+# Default:
+#
+SERVICE_PORTS: ''
+
+# SERVICE_MONITOR_PORT_NAME is the customization for ServiceMonitor port. If it is not set, the default one is used.
+# Type: string
+# Mandatory: no
+# Default: exporter-prom
+#
+SERVICE_MONITOR_PORT_NAME: "exporter-prom"
+
+# LATENCY_HISTOGRAM_BUCKETS is the list of durations defining the latency histogram buckets. If it is not set, the default list is used.
+# Type: list of strings
+# Mandatory: no
+# Default: [2ms, 4ms, 6ms, 8ms, 10ms, 50ms, 100ms, 200ms, 400ms, 800ms, 1s, 1400ms, 2s, 5s, 10s, 15s]
+#
+LATENCY_HISTOGRAM_BUCKETS: [2ms, 4ms, 6ms, 8ms, 10ms, 50ms, 100ms, 200ms, 400ms, 800ms, 1s, 1400ms, 2s, 5s, 10s, 15s]
+
+# DEPLOYMENT_STRATEGY_TYPE sets Kubernetes rolling update deployment strategies. Possible values are recreate, best_effort_controlled_rollout, ramped_slow_rollout, custom_rollout
+# Type: string
+# Mandatory: no
+# Default: By default RollingUpdate strategy with maxSurge=25% and maxUnavailable=25% is used
+#
+DEPLOYMENT_STRATEGY_TYPE: ''
+
+# DEPLOYMENT_STRATEGY_TYPE sets maxSurge if DEPLOYMENT_STRATEGY_TYPE is custom_rollout
+# Type: string
+# Mandatory: no
+# Default: "25%"
+#
+DEPLOYMENT_STRATEGY_MAXSURGE: ''
+
+# DEPLOYMENT_STRATEGY_MAXUNAVAILABLE sets maxUnavailable if DEPLOYMENT_STRATEGY_TYPE is custom_rollout
+# Type: string
+# Mandatory: no
+# Default: "25%"
+#
+DEPLOYMENT_STRATEGY_MAXUNAVAILABLE: ''
+
+# OTEC_INSTALLATION_MODE the type of OOB configuration (SPAN_METRICS_PROCESSOR or SENTRY_ENVELOPES_PROCESSING)
+# Type: string
+# Mandatory: no
+# Default: "SPAN_METRICS_PROCESSOR"
+#
+OTEC_INSTALLATION_MODE: 'SPAN_METRICS_PROCESSOR'
+
+# OTeC log-level, possible values : debug, info, warn, error
+# Type: string
+# Mandatory: no
+# Default: "debug"
+LOG_LEVEL: 'debug'
+
+# OTeC log format, possible values : json, text
+# Type: string
+# Mandatory: no
+# Default: "json"
+OTEC_LOG_FORMAT: 'json'
+
+# OTeC health check port
+# Type: int
+# Mandatory: no
+# Default: 13133
+OTEC_HEALTH_CHECK_PORT: 13133
+
+# Allows to enable arbitrary traces logging
+# Type: boolean
+# Default: false
+#
+OTEC_ENABLE_ARBITRARY_TRACES_LOGGING: false
+
+# Allows to customize arbitrary traces logging configuration
+# Type: object
+# Default: empty
+#
+OTEC_ARBITRARY_TRACES_LOGGING_CONFIG: {}
+
+
+# Array of topologies settings for topologySpreadConstraints. Each array item must contain at least 'topologyKey' attribute. Other supported attributes are 'maxSkew' and 'whenUnsatisfiable' - optional. This parameter has higher priority over CLOUD_TOPOLOGY_KEY. Should not be empty list
+# Type: object
+# Default: empty
+#
+# CLOUD_TOPOLOGIES:
+
+# Defines topologyKey in topologySpreadConstraints. This is BWC parameter.
+# Type: string
+# Default: kubernetes.io/hostname
+#
+CLOUD_TOPOLOGY_KEY: kubernetes.io/hostname
