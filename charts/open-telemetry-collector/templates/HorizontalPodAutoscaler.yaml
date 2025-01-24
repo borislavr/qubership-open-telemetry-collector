@@ -29,7 +29,7 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: {{ int (divf (mulf (default 75 .Values.HPA_AVG_CPU_UTILIZATION_TARGET_PERCENT) (include "to_millicores" .Values.CPU_LIMIT)) (include "to_millicores" .Values.CPU_REQUEST)) }}
+          averageUtilization: {{ int (divf (mulf (default 75 .Values.HPA_AVG_CPU_UTILIZATION_TARGET_PERCENT) (include "to_millicores" .Values.resources.limits.cpu)) (include "to_millicores" .Values.resources.requests.cpu)) }}
   behavior:
     scaleUp:
       stabilizationWindowSeconds: {{ default 0 .Values.HPA_SCALING_UP_STABILIZATION_WINDOW_SECONDS }}

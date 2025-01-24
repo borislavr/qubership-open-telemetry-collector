@@ -103,7 +103,7 @@ spec:
       containers:
         - name: opentelemetry-collector
           command: ["{{ .Values.entrypoint }}","--config", "/conf/otel.yaml"]
-          image: '{{ .Values.IMAGE_REPOSITORY }}:{{ .Values.TAG }}'
+          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
           ports:
             - name: jaeger-compact
               containerPort: 6831
@@ -143,11 +143,11 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- else }}
             limits:
-              cpu: '{{ .Values.CPU_LIMIT }}'
-              memory: '{{ .Values.MEMORY_LIMIT }}'
+              cpu: '{{ .Values.resources.limits.cpu }}'
+              memory: '{{ .Values.resources.limits.memory }}'
             requests:
-              cpu: '{{ .Values.CPU_REQUEST }}'
-              memory: '{{ .Values.MEMORY_REQUEST }}'
+              cpu: '{{ .Values.resources.requests.cpu }}'
+              memory: '{{ .Values.resources.requests.memory }}'
           {{- end }}
           volumeMounts:
             - name: opentelemetry-collector-vol
@@ -183,6 +183,7 @@ spec:
               path: /
               port: {{ .Values.OTEC_HEALTH_CHECK_PORT }}
               scheme: HTTP
+            initialDelaySeconds: 3
             timeoutSeconds: 1
             periodSeconds: 10
             successThreshold: 1
@@ -192,6 +193,7 @@ spec:
           imagePullPolicy: IfNotPresent
           securityContext:
             {{- if eq .Values.PAAS_PLATFORM "KUBERNETES" }}
+            runAsUser: 10001
             runAsGroup: 10001
             {{- end }}
             readOnlyRootFilesystem: true
