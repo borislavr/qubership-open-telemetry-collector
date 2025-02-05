@@ -71,9 +71,8 @@ resources:
 #
 PAAS_PLATFORM: KUBERNETES
 
-image:
-  repository: ghcr.io/netcracker/qubership-open-telemetry-collector
-  tag: main
+#imageRepository: ghcr.io/netcracker/qubership-open-telemetry-collector
+#imageTag: main
 
 # Only pods which provide own keys can access the private registry.
 # Default: []

@@ -30,3 +30,16 @@
         {{- $noop := unset $valuesMap "HPA_SCALING_DOWN_PODS_PERIOD_SECONDS" -}}
     {{- end -}}
 {{- end -}}
+
+{{/*
+Find an image in various places. Image can be found from:
+* specified by user from .Values.imageRepository and .Values.imageTag
+* default value
+*/}}
+{{- define "otec.image" -}}
+  {{- if and (not (empty .Values.imageRepository)) (not (empty .Values.imageTag)) -}}
+    {{- printf "%s:%s" .Values.imageRepository .Values.imageTag -}}
+  {{- else -}}
+    {{- printf "ghcr.io/netcracker/qubership-open-telemetry-collector:main" -}}
+  {{- end -}}
+{{- end -}}
