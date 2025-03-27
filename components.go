@@ -15,30 +15,31 @@
 package main
 
 import (
-	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/connector"
-	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/extension"
-	"go.opentelemetry.io/collector/otelcol"
-	"go.opentelemetry.io/collector/processor"
-	"go.opentelemetry.io/collector/receiver"
+	sentrymetricsconnector "github.com/Netcracker/qubership-open-telemetry-collector/connector/sentrymetricsconnector"
+	logtcpexporter "github.com/Netcracker/qubership-open-telemetry-collector/exporter/logtcpexporter"
+
+	sentryreceiver "github.com/Netcracker/qubership-open-telemetry-collector/receiver/sentryreceiver"
 	spanmetricsconnector "github.com/open-telemetry/opentelemetry-collector-contrib/connector/spanmetricsconnector"
-	sentrymetricsconnector "otec/connector/sentrymetricsconnector"
-	debugexporter "go.opentelemetry.io/collector/exporter/debugexporter"
-	otlpexporter "go.opentelemetry.io/collector/exporter/otlpexporter"
 	prometheusexporter "github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter"
-	loggingexporter "go.opentelemetry.io/collector/exporter/loggingexporter"
-	logtcpexporter "otec/exporter/logtcpexporter"
 	healthcheckextension "github.com/open-telemetry/opentelemetry-collector-contrib/extension/healthcheckextension"
 	pprofextension "github.com/open-telemetry/opentelemetry-collector-contrib/extension/pprofextension"
-	batchprocessor "go.opentelemetry.io/collector/processor/batchprocessor"
 	filterprocessor "github.com/open-telemetry/opentelemetry-collector-contrib/processor/filterprocessor"
 	probabilisticsamplerprocessor "github.com/open-telemetry/opentelemetry-collector-contrib/processor/probabilisticsamplerprocessor"
 	transformprocessor "github.com/open-telemetry/opentelemetry-collector-contrib/processor/transformprocessor"
-	otlpreceiver "go.opentelemetry.io/collector/receiver/otlpreceiver"
 	jaegerreceiver "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/jaegerreceiver"
 	zipkinreceiver "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/zipkinreceiver"
-	sentryreceiver "otec/receiver/sentryreceiver"
+	"go.opentelemetry.io/collector/component"
+	"go.opentelemetry.io/collector/connector"
+	"go.opentelemetry.io/collector/exporter"
+	debugexporter "go.opentelemetry.io/collector/exporter/debugexporter"
+	loggingexporter "go.opentelemetry.io/collector/exporter/loggingexporter"
+	otlpexporter "go.opentelemetry.io/collector/exporter/otlpexporter"
+	"go.opentelemetry.io/collector/extension"
+	"go.opentelemetry.io/collector/otelcol"
+	"go.opentelemetry.io/collector/processor"
+	batchprocessor "go.opentelemetry.io/collector/processor/batchprocessor"
+	"go.opentelemetry.io/collector/receiver"
+	otlpreceiver "go.opentelemetry.io/collector/receiver/otlpreceiver"
 )
 
 func components() (otelcol.Factories, error) {
@@ -69,7 +70,7 @@ func components() (otelcol.Factories, error) {
 	factories.ReceiverModules[otlpreceiver.NewFactory().Type()] = "go.opentelemetry.io/collector/receiver/otlpreceiver v0.106.1"
 	factories.ReceiverModules[jaegerreceiver.NewFactory().Type()] = "go.opentelemetry.io/collector/receiver/jaegerreceiver v0.106.1"
 	factories.ReceiverModules[zipkinreceiver.NewFactory().Type()] = "go.opentelemetry.io/collector/receiver/zipkinreceiver v0.106.1"
-	factories.ReceiverModules[sentryreceiver.NewFactory().Type()] = "otec/receiver/sentryreceiver v1.1.17"
+	factories.ReceiverModules[sentryreceiver.NewFactory().Type()] = "github.com/Netcracker/qubership-open-telemetry-collector/receiver/sentryreceiver v1.1.17"
 
 	factories.Exporters, err = exporter.MakeFactoryMap(
 		debugexporter.NewFactory(),
@@ -86,7 +87,7 @@ func components() (otelcol.Factories, error) {
 	factories.ExporterModules[otlpexporter.NewFactory().Type()] = "go.opentelemetry.io/collector/exporter/otlpexporter v0.106.1"
 	factories.ExporterModules[prometheusexporter.NewFactory().Type()] = "go.opentelemetry.io/collector/exporter/prometheusexporter v0.106.1"
 	factories.ExporterModules[loggingexporter.NewFactory().Type()] = "go.opentelemetry.io/collector/exporter/loggingexporter v0.106.1"
-	factories.ExporterModules[logtcpexporter.NewFactory().Type()] = "otec/exporter/logtcpexporter v1.1.17"
+	factories.ExporterModules[logtcpexporter.NewFactory().Type()] = "github.com/Netcracker/qubership-open-telemetry-collector/exporter/logtcpexporter v1.1.17"
 
 	factories.Processors, err = processor.MakeFactoryMap(
 		batchprocessor.NewFactory(),
@@ -112,7 +113,7 @@ func components() (otelcol.Factories, error) {
 	}
 	factories.ConnectorModules = make(map[component.Type]string, len(factories.Connectors))
 	factories.ConnectorModules[spanmetricsconnector.NewFactory().Type()] = "go.opentelemetry.io/collector/connector/spanmetricsconnector v0.106.1"
-	factories.ConnectorModules[sentrymetricsconnector.NewFactory().Type()] = "otec/connector/sentrymetricsconnector v1.1.17"
+	factories.ConnectorModules[sentrymetricsconnector.NewFactory().Type()] = "github.com/Netcracker/qubership-open-telemetry-collector/connector/sentrymetricsconnector v1.1.17"
 
 	return factories, nil
 }

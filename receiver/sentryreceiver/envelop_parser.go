@@ -17,8 +17,9 @@ package sentryreceiver
 import (
 	"encoding/json"
 	"fmt"
-	"otec/receiver/sentryreceiver/models"
 	"strings"
+
+	"github.com/Netcracker/qubership-open-telemetry-collector/receiver/sentryreceiver/models"
 )
 
 func (sr *sentrytraceReceiver) ParseEnvelopEvent(body string) (*models.EnvelopEventParseResult, error) {
@@ -41,7 +42,7 @@ func (sr *sentrytraceReceiver) ParseEnvelopEvent(body string) (*models.EnvelopEv
 	}
 
 	var envelopType = models.ENVELOP_TYPE_UNKNOWN
-	for i := 1; i + 1 < linesCount; i+=2 {
+	for i := 1; i+1 < linesCount; i += 2 {
 		header := lines[i]
 		if len(header) < 2 {
 			continue
