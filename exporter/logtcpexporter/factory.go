@@ -17,6 +17,7 @@ package logtcpexporter
 import (
 	"context"
 	"errors"
+	"time"
 
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/config/confignet"
@@ -67,6 +68,6 @@ func createTracesExporter(
 		cfg,
 		lte.pushTraces,
 		exporterhelper.WithStart(lte.start),
-		exporterhelper.WithTimeout(exporterhelper.TimeoutConfig{Timeout: 0}),
+		exporterhelper.WithTimeout(exporterhelper.TimeoutConfig{time.Duration(0)}),
 	)
 }
