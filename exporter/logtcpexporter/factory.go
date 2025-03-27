@@ -22,11 +22,10 @@ import (
 	"go.opentelemetry.io/collector/config/confignet"
 	"go.opentelemetry.io/collector/exporter"
 	"go.opentelemetry.io/collector/exporter/exporterhelper"
-
 )
 
 const (
-	typeStr = "logtcpexporter"
+	typeStr             = "logtcpexporter"
 	defaultBindEndpoint = "0.0.0.0:12201"
 )
 
@@ -42,10 +41,10 @@ func createDefaultConfig() component.Config {
 		TCPAddrConfig: confignet.TCPAddrConfig{
 			Endpoint: defaultBindEndpoint,
 		},
-		ConnPoolSize: 1,
-		QueueSize: 1024,
-		MaxMessageSendRetryCnt: 1,
-		MaxSuccessiveSendErrCnt: 5,
+		ConnPoolSize:                1,
+		QueueSize:                   1024,
+		MaxMessageSendRetryCnt:      1,
+		MaxSuccessiveSendErrCnt:     5,
 		SuccessiveSendErrFreezeTime: "1m",
 	}
 }
@@ -62,12 +61,12 @@ func createTracesExporter(
 	}
 
 	lte := createLogTcpExporter(ltec, set)
-	return exporterhelper.NewTracesExporter(
+	return exporterhelper.NewTraces(
 		ctx,
 		set,
 		cfg,
 		lte.pushTraces,
 		exporterhelper.WithStart(lte.start),
-		exporterhelper.WithTimeout(exporterhelper.TimeoutSettings{Timeout: 0}),
-        )
+		exporterhelper.WithTimeout(exporterhelper.TimeoutConfig{Timeout: 0}),
+	)
 }
