@@ -2,9 +2,7 @@
 
 module github.com/Netcracker/qubership-open-telemetry-collector
 
-go 1.22.0
-
-toolchain go1.22.5
+go 1.23.5
 
 require (
 	github.com/Jeffail/gabs v1.4.0
@@ -50,6 +48,7 @@ require (
 
 require (
 	cloud.google.com/go v0.65.0 // indirect
+	github.com/Netcracker/qubership-open-telemetry-collector/utils v0.0.0-20250327101059-36aa6948477d // indirect
 	github.com/alecthomas/participle/v2 v2.1.1 // indirect
 	github.com/apache/thrift v0.20.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
