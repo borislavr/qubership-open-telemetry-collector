@@ -3,7 +3,7 @@ module github.com/Netcracker/qubership-open-telemetry-collector/receiver/sentryr
 go 1.23.5
 
 require (
-	github.com/Netcracker/qubership-open-telemetry-collector/utils v0.0.0-00010101000000-000000000000
+	github.com/Netcracker/qubership-open-telemetry-collector/utils v1.0.0
 	go.opentelemetry.io/collector/component v1.28.1
 	go.opentelemetry.io/collector/config/confighttp v0.122.1
 	go.opentelemetry.io/collector/consumer v1.28.1
@@ -51,4 +51,4 @@ require (
 	google.golang.org/protobuf v1.36.5 // indirect
 )
 
-replace github.com/Netcracker/qubership-open-telemetry-collector/utils => ..\..\utils
+replace github.com/Netcracker/qubership-open-telemetry-collector/utils v1.0.0 => ..\..\utils
