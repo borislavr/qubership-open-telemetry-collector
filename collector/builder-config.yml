@@ -2,8 +2,7 @@ dist:
   name: qubership-open-telemetry-collector
   description: Custom OTel Collector for qubership platform
   #version: 0.122.1
-  output_path: ./otelcol
-
+  output_path: ./
 exporters:
   - gomod:
       go.opentelemetry.io/collector/exporter/debugexporter latest
@@ -55,7 +54,6 @@ connectors:
         github.com/Netcracker/qubership-open-telemetry-collector/connector/sentrymetricsconnector add-tailbased-tracing
 
 replaces:
-  - github.com/Netcracker/qubership-open-telemetry-collector/exporter/logtcpexporter => ../../exporter/logtcpexporter
-  - github.com/Netcracker/qubership-open-telemetry-collector/receiver/sentryreceiver => ../../receiver/sentryreceiver
-  - github.com/Netcracker/qubership-open-telemetry-collector/connector/sentrymetricsconnector => ../../connector/sentrymetricsconnector
-
+  - github.com/Netcracker/qubership-open-telemetry-collector/exporter/logtcpexporter => ./exporter/logtcpexporter
+  - github.com/Netcracker/qubership-open-telemetry-collector/receiver/sentryreceiver => ./receiver/sentryreceiver
+  - github.com/Netcracker/qubership-open-telemetry-collector/connector/sentrymetricsconnector => ./connector/sentrymetricsconnector

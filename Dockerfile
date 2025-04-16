@@ -1,26 +1,39 @@
-# Note: this uses host platform for the build, and we ask go build to target the needed platform, so we do not spend time on qemu emulation when running "go build"
-FROM --platform=$BUILDPLATFORM golang:1.23.4-alpine3.21 AS builder
-ARG BUILDPLATFORM
-ARG TARGETOS
-ARG TARGETARCH
-ARG GOPROXY=""
-ENV GOSUMDB=off \
-    GO111MODULE=on
+# Stage 1: Builder
+FROM golang:1.23-bookworm AS builder
 
-WORKDIR /workspace
+ARG OTEL_VERSION=0.124.0
 
-COPY go.mod go.mod
-COPY go.sum go.sum
+WORKDIR /build
 
-COPY *.go ./
-COPY connector/ connector/
-COPY exporter/ exporter/
-COPY receiver/ receiver/
-COPY utils/ utils/
+# Install the builder tool
+# RUN go install go.opentelemetry.io/collector/cmd/builder@v${OTEL_VERSION}
 
-RUN go mod download -x
+# Copy the manifest file and other necessary files
+COPY ./collector/builder-config.yml .
+COPY ./collector/ocb .
+RUN chmod 755 ./ocb
+COPY ./connector ./connector
+COPY ./exporter ./exporter
+COPY ./receiver ./receiver
+COPY ./utils ./utils
 
-RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -a -o qubership-open-telemetry-collector .
+# Build the custom collector
+RUN ./ocb --config=builder-config.yml
 
-FROM alpine:3.21.0
-COPY --from=builder --chown=10001:0 /workspace/qubership-open-telemetry-collector qubership-open-telemetry-collector
+# Stage 2: Final Image
+FROM cgr.dev/chainguard/static:latest
+
+WORKDIR /app
+
+# Copy the generated collector binary from the builder stage
+COPY --from=builder /build/qubership-open-telemetry-collector .
+
+# Copy the configuration file
+#COPY config.yaml .
+
+# Expose necessary ports
+EXPOSE 4317/tcp 4318/tcp 13133/tcp
+
+# Set the default command
+#CMD ["/app/otelcol-custom", "--config=config.yaml"]
+CMD ["/app/qubership-open-telemetry-collector"] 
