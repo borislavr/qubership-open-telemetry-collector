@@ -2,7 +2,7 @@
 # Type: string
 # Default: open-telemetry-collector
 #
-SERVICE_NAME: open-telemetry-collector
+SERVICE_NAME: qubership-open-telemetry-collector
 
 # Allows creating a service monitor that sends SPM metrics to prometheus.
 # Type: boolean
@@ -133,7 +133,7 @@ resources:
 #
 PAAS_PLATFORM: KUBERNETES
 
-imageRepository: otel/opentelemetry-collector-contrib
+imageRepository: qubership-open-telemetry-collector
 imageTag: latest
 
 # Only pods which provide own keys can access the private registry.
@@ -167,7 +167,7 @@ annotations: {}
 # Mandatory: no
 # Default: /otec
 #
-entrypoint: "/otelcontribcol"
+entrypoint: "/qubership-open-telemetry-collector"
 
 # JAEGER_COLLECTOR_HOST is the Jaeger hostname or ip
 # Type: string

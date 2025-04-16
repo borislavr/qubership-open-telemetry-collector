@@ -6,7 +6,7 @@ ARG OTEL_VERSION=0.124.0
 WORKDIR /build
 
 # Install the builder tool
-# RUN go install go.opentelemetry.io/collector/cmd/builder@v${OTEL_VERSION}
+RUN go install go.opentelemetry.io/collector/cmd/builder@v${OTEL_VERSION}
 
 # Copy the manifest file and other necessary files
 COPY ./collector/builder-config.yml .
@@ -18,7 +18,8 @@ COPY ./receiver ./receiver
 COPY ./utils ./utils
 
 # Build the custom collector
-RUN ./ocb --config=builder-config.yml
+#RUN ./ocb --config=builder-config.yml
+RUN CGO_ENABLED=0 builder --config=builder-config.yml
 
 # Stage 2: Final Image
 FROM cgr.dev/chainguard/static:latest
