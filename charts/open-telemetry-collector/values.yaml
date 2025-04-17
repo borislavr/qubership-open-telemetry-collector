@@ -68,7 +68,7 @@ OTEC_TAILBASED_GENERAL_PARAMETERS:
 # Default: see below
 #
 OTEC_TAILBASED_POLICIES_PARAMETERS:
-policies:
+    policies:
          [ 
           {
             name: composite-policy,
@@ -112,7 +112,7 @@ policies:
                   ]
               }
           }
-         ]            
+         ]
 # The resources describe to compute resource requests and limits for single Pods.
 # Ref: https://kubernetes.io/docs/user-guide/compute-resources/
 # Type: object
@@ -123,8 +123,8 @@ resources:
     cpu: 100m
     memory: 100Mi
   limits:
-    cpu: 200m
-    memory: 200Mi
+    cpu: 2000m
+    memory: 2000Mi
 
 # The name of type cloud environment
 # Type: String
@@ -133,7 +133,7 @@ resources:
 #
 PAAS_PLATFORM: KUBERNETES
 
-imageRepository: qubership-open-telemetry-collector
+imageRepository: docker.io/library/qubership-open-telemetry-collector
 imageTag: latest
 
 # Only pods which provide own keys can access the private registry.
@@ -167,7 +167,7 @@ annotations: {}
 # Mandatory: no
 # Default: /otec
 #
-entrypoint: "/qubership-open-telemetry-collector"
+entrypoint: "/app/qubership-open-telemetry-collector"
 
 # JAEGER_COLLECTOR_HOST is the Jaeger hostname or ip
 # Type: string

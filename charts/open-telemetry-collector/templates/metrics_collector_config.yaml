@@ -40,10 +40,10 @@ data:
     {{- end }}
     processors:
       batch:
-        send_batch_size: 10000
-        timeout: 10s
-      {{- if .Values.OTEC_TAILBASED_GENERAL_PARAMETERS}} "{{- toYaml (.Values.OTEC_TAILBASED_GENERAL_PARAMETERS) | nindent 6}}"{{- end }}
-        {{- if .Values.OTEC_TAILBASED_POLICIES_PARAMETERS}} "{{- toYaml (.Values.OTEC_TAILBASED_POLICIES_PARAMETERS) | nindent 8}}"{{- end }}
+        send_batch_max_size: 10000
+        timeout: 0s
+      {{- if .Values.OTEC_TAILBASED_GENERAL_PARAMETERS}} {{- toYaml (.Values.OTEC_TAILBASED_GENERAL_PARAMETERS) | nindent 6}}{{- end }}
+      {{- if .Values.OTEC_TAILBASED_POLICIES_PARAMETERS}} {{- toYaml (.Values.OTEC_TAILBASED_POLICIES_PARAMETERS) | nindent 8}}{{- end }}
     connectors:
       spanmetrics:
         histogram:

@@ -35,4 +35,4 @@ EXPOSE 4317/tcp 4318/tcp 13133/tcp
 
 # Set the default command
 #CMD ["/app/otelcol-custom", "--config=config.yaml"]
-CMD ["/app/qubership-open-telemetry-collector"] 
+CMD ["/app/qubership-open-telemetry-collector" , "--config=otel.yaml"] 

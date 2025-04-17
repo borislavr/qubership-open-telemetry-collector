@@ -22,8 +22,9 @@ processors:
   - gomod:
       github.com/open-telemetry/opentelemetry-collector-contrib/processor/filterprocessor latest
   - gomod:
-      github.com/open-telemetry/opentelemetry-collector-contrib/processor/transformprocessor latest   
-
+      github.com/open-telemetry/opentelemetry-collector-contrib/processor/transformprocessor latest
+  - gomod:
+      github.com/open-telemetry/opentelemetry-collector-contrib/processor/tailsamplingprocessor latest
 
 receivers:
   - gomod:
@@ -52,6 +53,8 @@ extensions:
 connectors:
     - gomod:
         github.com/Netcracker/qubership-open-telemetry-collector/connector/sentrymetricsconnector add-tailbased-tracing
+    - gomod:
+        github.com/open-telemetry/opentelemetry-collector-contrib/connector/spanmetricsconnector latest
 
 replaces:
   - github.com/Netcracker/qubership-open-telemetry-collector/exporter/logtcpexporter => ./exporter/logtcpexporter
