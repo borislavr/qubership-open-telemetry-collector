@@ -13,7 +13,6 @@ The following third-party(contrib) modules are supported by this implementation 
 - [debugexporter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/debugexporter/README.md)
 - [otlpexporter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/otlpexporter/README.md)
 - [prometheusexporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/prometheusexporter/README.md)
-- [loggingexporter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/loggingexporter/README.md)
 - [jaegerexporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/v0.85.0/exporter/jaegerexporter)
 - [healthcheckextension](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/extension/healthcheckextension/README.md)
 - [pprofextension](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/extension/pprofextension/README.md)
@@ -26,9 +25,9 @@ The following third-party(contrib) modules are supported by this implementation 
 - [zipkinreceiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/zipkinreceiver)
 
 Also there are custom implementations for  
-- [sentryreceiver](receiver/sentryreceiver), see also the [document](sentry-receiver.md#sentry-envelope-mapping-to-jaeger-traces)
-- [sentrymetricsconnector](connector/sentrymetricsconnector), see also the [document](sentry-receiver.md#sentry-envelope-to-metrics)
-- [logtcpexporter](exporter/logtcpexporter), see also the [document](sentry-receiver.md#sentry-envelope-to-logs-records-graylog-mapping)  
+- [sentryreceiver](../receiver/sentryreceiver), see also the [document](sentry-receiver.md#sentry-envelope-mapping-to-jaeger-traces)
+- [sentrymetricsconnector](../connector/sentrymetricsconnector), see also the [document](sentry-receiver.md#sentry-envelope-to-metrics)
+- [logtcpexporter](../exporter/logtcpexporter), see also the [document](sentry-receiver.md#sentry-envelope-to-logs-records-graylog-mapping)  
 
 All third-party and custom modules are listed in [componets.go](../components.go)
 
