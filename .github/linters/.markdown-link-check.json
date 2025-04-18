@@ -1,0 +1,6 @@
+{
+  "ignorePatterns": [
+    "https://ndjson.org/libraries.html"
+  ],
+  "statusIgnore": [520]
+}
