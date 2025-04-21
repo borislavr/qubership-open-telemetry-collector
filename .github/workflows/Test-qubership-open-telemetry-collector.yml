@@ -28,6 +28,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: qubership-open-telemetry-collector
+          
       - name: Set up Kind
         run: |
           curl -sLo ./kind https://kind.sigs.k8s.io/dl/${{ env.kind_version }}/kind-linux-amd64
@@ -39,6 +40,118 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+      - name: Install cert-manager
+        run: |
+          helm repo add jetstack https://charts.jetstack.io --force-update 
+          helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager \
+            --create-namespace --version v1.16.3 --set prometheus.enabled=true   --set crds.enabled=true
+
+      - name: Install k8ssandra operator
+        run: |
+          helm repo add k8ssandra https://helm.k8ssandra.io/stable --force-update
+          helm upgrade --install k8ssandra-operator k8ssandra/k8ssandra-operator \
+            --namespace ${{ env.cassandra_namespace }} --create-namespace
+      
+      - name: Check k8ssandra-operator pod status
+        run: |    
+          attempt=1
+          max_attempts=${{ env.max_attempts }}
+          while [[ $attempt -le $max_attempts ]]; do
+            echo "Attempt $attempt/$max_attempts: Checking k8ssandra-operator pod status..."  
+            phase=$(kubectl get pod -l app.kubernetes.io/name=k8ssandra-operator -n ${{ env.cassandra_namespace }} -o jsonpath='{.items[0].status.phase}' 2>/dev/null || echo "NotFound")
+            ready=$(kubectl get pod -l app.kubernetes.io/name=k8ssandra-operator -n ${{ env.cassandra_namespace }} -o jsonpath='{.items[0].status.conditions[?(@.type=="Ready")].status}' 2>/dev/null || echo "NotFound")
+            if [[ "$ready" == "True" ]]; then
+              echo "k8ssandra-operator pod is ready."
+              break
+            elif [[ "$ready" == "False" && "$phase" == "Running" ]]; then
+              echo "k8ssandra-operator pod is not ready yet."
+              sleep ${{ env.delay }}
+              ((attempt++))
+            elif [[ "$phase" == "Pending" ]]; then
+              echo "k8ssandra-operator pod status: $phase. Retrying in ${{ env.delay }} seconds..."
+              sleep ${{ env.delay }}
+              ((attempt++))
+            else 
+              echo "k8ssandra-operator pod status: $phase"
+              exit 1  
+            fi
+          done
+          if [[ "$ready" != "True" && "$phase" != "Running" ]]; then
+            echo "ERROR: Maximum attempts reached. k8ssandra-operator pod is not healthy."
+            kubectl get pods -n ${{ env.cassandra_namespace }}
+            echo -e "\n======================================================================"
+            kubectl get events -n ${{ env.cassandra_namespace }}
+            exit 1
+          fi
+      
+      - name: Deploy k8ssandra cluster
+        run: |
+          cat <<EOF | kubectl apply -n ${{ env.cassandra_namespace }} -f -
+          apiVersion: k8ssandra.io/v1alpha1
+          kind: K8ssandraCluster
+          metadata:
+            name: cassandra
+          spec:
+            cassandra:
+              serverVersion: "4.0.1"
+              datacenters:
+                - metadata:
+                    name: dc1
+                  size: 1
+                  storageConfig:
+                    cassandraDataVolumeClaimSpec:
+                      storageClassName: standard
+                      accessModes:
+                        - ReadWriteOnce
+                      resources:
+                        requests:
+                          storage: 5Gi
+                  config:
+                    jvmOptions:
+                      heapSize: 512M
+          EOF
+      
+      - name: Check k8ssandra cluster status
+        run: |
+          attempt=1
+          max_attempts=${{ env.max_attempts }}
+          while [[ $attempt -le $max_attempts ]]; do
+            echo "Attempt $attempt/$max_attempts: Checking k8ssandra cluster status..."
+            phase=$(kubectl get pod -l app.kubernetes.io/name=cassandra -n ${{ env.cassandra_namespace }} -o jsonpath='{.items[0].status.phase}' 2>/dev/null || echo "NotFound")
+            ready=$(kubectl get pod -l app.kubernetes.io/name=cassandra -n ${{ env.cassandra_namespace }} -o jsonpath='{.items[0].status.conditions[?(@.type=="Ready")].status}' 2>/dev/null || echo "NotFound")
+            if [[ "$ready" == "True" ]]; then
+              echo "k8ssandra cluster is ready."
+              break
+            elif [[ "$ready" == "False" && "$phase" == "Running" ]]; then
+              echo "k8ssandra cluster is not ready yet."
+              sleep ${{ env.delay }}
+              ((attempt++))
+            elif [[ "$phase" == "Pending" ]]; then
+              echo "k8ssandra cluster status: $phase. Retrying in ${{ env.delay }} seconds..."
+              sleep ${{ env.delay }}
+              ((attempt++))
+            else 
+              echo "k8ssandra cluster status: $phase"
+              exit 1
+            fi
+          done
+          if [[ "$ready" != "True" && "$phase" != "Running" ]]; then
+            echo "ERROR: Maximum attempts reached. k8ssandra cluster is not ready."
+            kubectl get pods -n ${{ env.cassandra_namespace }}
+            echo -e "\n======================================================================"
+            kubectl get events -n ${{ env.cassandra_namespace }}
+            exit 1
+          fi
+      - name: Install jaeger
+        run: |
+          CASSANDRA_USER=$(kubectl get secret -n k8ssandra-operator cassandra-superuser -o json | jq -r '.data.username' | base64 -d)
+          CASSANDRA_PASSWORD=$(kubectl get secret -n k8ssandra-operator cassandra-superuser -o json | jq -r '.data.password' | base64 -d)
+          CASSANDRA_SVC=cassandra-dc1-service.k8ssandra-operator
+          helm upgrade --install qubership-jaeger ./qubership-jaeger/charts/qubership-jaeger --namespace jaeger \
+            --create-namespace --set jaeger.prometheusMonitoringDashboard=false --set jaeger.prometheusMonitoring=false \
+            --set "cassandraSchemaJob.host=$CASSANDRA_SVC" --set "cassandraSchemaJob.username=$CASSANDRA_USER" \
+            --set "cassandraSchemaJob.password=$CASSANDRA_PASSWORD" --set cassandraSchemaJob.datacenter=dc1
+          
       - name: Cleanup
         run: |
           kind delete cluster --name ${{ env.kind_name }}
