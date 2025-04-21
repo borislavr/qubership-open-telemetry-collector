@@ -1,0 +1,44 @@
+name: Test-qubership-open-telemetry-collector
+
+on:
+  workflow_run:
+    workflows: ["Build Artifacts"]
+    types:
+      - completed
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - add-tailbased-tracing
+
+env:
+  kind_name: kind-cluster
+  kind_version: v0.27.0
+  cassandra_namespace: cassandra
+  jaeger_namespace: jaeger
+  namespace: monitoring
+  max_attempts: 5
+  delay: 10
+
+jobs:
+  Run-Integration-Tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          path: qubership-open-telemetry-collector
+      - name: Set up Kind
+        run: |
+          curl -sLo ./kind https://kind.sigs.k8s.io/dl/${{ env.kind_version }}/kind-linux-amd64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/
+          kind create cluster --name ${{ env.kind_name }}
+
+      - name: Install Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+      - name: Cleanup
+        run: |
+          kind delete cluster --name ${{ env.kind_name }}
