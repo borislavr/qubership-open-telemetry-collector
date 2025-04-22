@@ -1,7 +1,7 @@
 {
   "ignorePatterns": [
     {
-      "pattern": "^https://ndjson.org/libraries.html"
+      "pattern": "ndjson.org/libraries.html"
     }
   ],
   "timeout": "20s",
