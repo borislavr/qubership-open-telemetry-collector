@@ -2,7 +2,7 @@
 
 ## Envelope
 
-**Envelope** - http/grpc/etc request with body in [ndjson](https://ndjson.org/libraries.html) format.
+**Envelope** - http/grpc/etc request with body in [ndjson](https://github.com/ndjson/ndjson.github.io/blob/master/libraries.html) format.
 
 Usually it has structure like:
 
