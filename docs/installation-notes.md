@@ -1,6 +1,9 @@
+# Installation Notes
+
 ## Deployment Configuration
 
-See below the full list of parameters which defines the Open Telemetry Collector deployment mode and is used during the installation. Mandatory parameters from the list must be specified for Open Telemetry Collector in helm.  
+See below the full list of parameters which defines the Open Telemetry Collector deployment mode and is used during the
+installation. Mandatory parameters from the list must be specified for Open Telemetry Collector in helm.  
 
 | Parameter                                         | Mandatory | Default                                                                                                                                               | Value Example                | Description                                                                                                                                                                                                                                                                                             |
 |---------------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -39,5 +42,12 @@ See below the full list of parameters which defines the Open Telemetry Collector
 | OTEC_ENABLE_<br>ARBITRARY_TRACES_<br>LOGGING      | N         | false                                                                                                                                                 | false                        | The parameter allows to enable arbitrary traces logging.                                                                                                                                                                                                                                                |
 | OTEC_ARBITRARY_<br>TRACES_LOGGING_<br>CONFIG      | N         |                                                                                                                                                       | Object                       | The parameter allows to customize arbitrary traces logging configuration.                                                                                                                                                                                                                               |
 
-**Note:** Open Telemetry Collector preprocesses traces before they come to the Jaeger storage. For proper work, a trace generating application must be configured to send the traces not to Jaeger directly, but to the Open Telemtry Collector endpoint. Open Telemetry Collector receives the traces, generates the metrics on their basis, then resends the traces to Jaeger. The generated Prometheus metrics are later available for pulling via the service monitor.  
-Jaeger endpoint configuration is the essential part of the OTeC configuration in helm. Note, that if the parameter JAEGER_COLLECTOR_HOST is not empty, the traces are sent to JAEGER_COLLECTOR_HOST:JAEGER_COLLECTOR_PORT URL. If the helm parameter JAEGER_COLLECTOR_HOST is empty, URL is taken from the helm parameter TRACING_HOST. If the helm parameters TRACING_HOST and JAEGER_COLLECTOR_HOST are both empty, then the traces are sent to the default URL jaeger-app-collector.jaeger:JAEGER_COLLECTOR_PORT. The default value for JAEGER_COLLECTOR_PORT is 14250.  
+**Note:** Open Telemetry Collector preprocesses traces before they come to the Jaeger storage. For proper work, a trace
+generating application must be configured to send the traces not to Jaeger directly, but to the Open Telemtry Collector
+endpoint. Open Telemetry Collector receives the traces, generates the metrics on their basis, then resends the traces to
+Jaeger. The generated Prometheus metrics are later available for pulling via the service monitor.  
+Jaeger endpoint configuration is the essential part of the OTeC configuration in helm. Note, that if the parameter
+JAEGER_COLLECTOR_HOST is not empty, the traces are sent to JAEGER_COLLECTOR_HOST:JAEGER_COLLECTOR_PORT URL. If the helm
+parameter JAEGER_COLLECTOR_HOST is empty, URL is taken from the helm parameter TRACING_HOST. If the helm parameters
+TRACING_HOST and JAEGER_COLLECTOR_HOST are both empty, then the traces are sent to the default URL
+jaeger-app-collector.jaeger:JAEGER_COLLECTOR_PORT. The default value for JAEGER_COLLECTOR_PORT is 14250.  
