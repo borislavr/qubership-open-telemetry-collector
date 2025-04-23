@@ -129,16 +129,19 @@ All fields from `event` should be the same, but they can be overridden by the `b
 ### `type: "session"`
 
 Envelopes with type `session` are not logged to the logging system.
-- sentry_session_exited_count - allows to monitor amount of unique sessions with `status: "exited"` when session ends.
 
 ## Sentry Envelope to Metrics
 
-SentryMetrics Connector allows to generate metrics for each type of sentry envelopes below:
+SentryMetrics Connector allows to generate metrics for each type of sentry envelopes below:  
 
-### `type: "transaction"`
+### `type: "session"` (Metrics)
+
+- sentry_session_exited_count - allows to monitor amount of unique sessions with `status: "exited"` when session ends.
+
+### `type: "transaction"` (Metrics)
 
 - sentry_measurements_statistic - allows to monitor Browser Web Vitals - measurements and duration of transactions - for each `{transaction} {context.trace.op}`.
 
-### `type: "event"`
+### `type: "event"` (Metrics)
 
 - sentry_event_count - allows to monitor amount of sentry events by `event.level`
