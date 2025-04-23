@@ -78,7 +78,7 @@ See below the custom modules configuration description.
 * `endpoint` (`required`) - Contains a string with the port number on which sentry-receiver is listening for input
 sentry-envelopes.
 * `http-query-param-values-to-attrs` (`optional`) - list of the URLs http query parameters which must be used as
-open-telemetry-collector attributes named http.qparam.<query_parameter_name>. The value of the attribiute is the value 
+open-telemetry-collector attributes named http.qparam.<query_parameter_name>. The value of the attribiute is the value
 of http query parameter. The URL is taken from sentry envelope by jsonpath "request.url".
 * `http-query-param-existence-to-attrs` (`optional`) - list of the URLs http query parameters which must be used as
 open-telemetry-collector attributes named http.qparam.<query_parameter_name>. The value of the attribiute is the `true`,
