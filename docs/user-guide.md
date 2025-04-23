@@ -31,21 +31,32 @@ Also there are custom implementations for
 
 All third-party and custom modules are listed in [componets.go](../components.go)
 
-# Use cases
-## Span Metrics Connector
-### Span Metrics Connector Overview
-[Span Metrics Connector](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/connector/spanmetricsconnector) :
-Aggregates Request, Error and Duration (R.E.D) metrics from span data. Earlier this module was implemented as a processor, so the module can be named as "Span Metrics Processor"  
+## Use cases
 
-### Architecture
-Traces source send traces to [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/). OpenTelemetry Collector later send traces to Jaeger, generate metrics for Prometheus and write logs to the Graylog with use of contrib and custom components, see the diagram below:
+### Span Metrics Connector
+
+#### Span Metrics Connector Overview
+
+[Span Metrics Connector](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/connector/spanmetricsconnector) :
+Aggregates Request, Error and Duration (R.E.D) metrics from span data. Earlier this module was implemented as a
+processor, so the module can be named as "Span Metrics Processor"  
+
+#### ASpan Metrics Connector rchitecture
+Traces source send traces to [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/). OpenTelemetry Collector later send traces to Jaeger,
+generate metrics for Prometheus and write logs to the Graylog with use of contrib and custom components, see the diagram
+below:
 
   ![Open-telemetry-collector Architecture](img/Architecture.png)
 
-## Sentry Envelopes Processing
-### Sentry Envelopes Processing Overview
-[Sentry Envelopes Processing](../receiver/sentryreceiver) : OTeC receives Sentry envelops via custom receiver, aggregates Request, Error and Duration (R.E.D) metrics from envelopes data, transforms sentry envelopes to Jaeger traces and pushes them to Jaeger backend.  
-### Architecture
+### Sentry Envelopes Processing
+
+#### Sentry Envelopes Processing Overview
+
+[Sentry Envelopes Processing](../receiver/sentryreceiver) : OTeC receives Sentry envelops via custom receiver, aggregates Request, Error and
+Duration (R.E.D) metrics from envelopes data, transforms sentry envelopes to Jaeger traces and pushes them to Jaeger
+backend.  
+
+#### Sentry Envelopes Processing Architecture
 
 Sentry SDK collects browser events and sends them as Sentry envelopes to custom sentry-receiver of the
 open-telemetry-collector-contrib. Custom sentry receiver transforms the received data to the inner
@@ -58,11 +69,11 @@ GRAYLOG_COLLECTOR_PORT.
 
   ![Open-telemetry-collector Architecture](img/Architecture_SentryEnvelopesProcessing.PNG )
 
-## Custom modules configuration
+### Custom modules configuration
 General approach for the configuration is described [here](https://opentelemetry.io/docs/collector/configuration/).  
 See below the custom modules configuration description.
 
-### Sentry Receiver
+#### Sentry Receiver
 
 * `endpoint` (`required`) - Contains a string with the port number on which sentry-receiver is listening for input
 sentry-envelopes.
@@ -83,26 +94,30 @@ key-value. If the context entity is a string, this string is put to the value of
 the context entity is a map with string key and string value, each value of the map is put to the value of
 contexts.<context_name>.<map_key> attribute.
 
-### Sentrymetrics Connector
+#### Sentrymetrics Connector
 
 * `sentry_measurements` (`optional`) - Contains settings for sentry_measurements Prometheus metric
-    * `default_buckets` (`optional`) - Contains a list of float values which are defining default buckets for the mesurements histograms. For the particular measurement buckets can be overwritten in custom section.
-    * `default_labels` (`optional`) - Contains a map, in which a key is the label name and a value is the name of the open-telemetry-collector attribute, from which the label value must be taken. For the particular measurement the map can be overwritten in custom section.
-    * `custom` (`optional`) - Contains a map, in which a key is the measurement name and a value is the data structure which contains `buckets` list and `labels` map for this particular measurement. This map allows to overwrite the `default_buckets` and `default_labels` settings respectively for the particular measurement.
+  * `default_buckets` (`optional`) - Contains a list of float values which are defining default buckets for the mesurements histograms. For the particular measurement buckets can be overwritten in custom section.
+  * `default_labels` (`optional`) - Contains a map, in which a key is the label name and a value is the name of the open-telemetry-collector attribute, from which the label value must be taken. For the particular measurement the map can be overwritten in custom section.
+  * `custom` (`optional`) - Contains a map, in which a key is the measurement name and a value is the data structure which contains `buckets` list and `labels` map for this particular measurement. This map allows to overwrite the `default_buckets` and `default_labels` settings respectively for the particular measurement.
 * `sentry_events` (`optional`) - Contains settings for sentry_events Prometheus metric
-    * `labels` (`optional`) - Contains a map, in which a key is the label name and a value is the name of the open-telemetry-collector attribute, from which the label value must be taken.
+  * `labels` (`optional`) - Contains a map, in which a key is the label name and a value is the name of the open-telemetry-collector attribute, from which the label value must be taken.
 
-### Logtcp Exporter
+#### Logtcp Exporter
 
 * `endpoint` (`required`) - Contains host and port for the Graylog TCP destination
 * `arbitrary-traces-logging` (`optional`) - Contains settings for arbitrary traces logging (ATL). ATL allows to log the traces with certain attributes. ATL can work in two modes : span mode and trace mode. In the first mode certain attributes of the spans are logging to the graylog. In the second mode the whole trace is logged to the graylog.  
   * `span-filters` (`optional`) - Contains a list of ATL filters for spans. Spans which satisfy at least one filter will be sent to the graylog. Filter consists of 2 conditions and a mapping below:
     * `service-names` - a list of service names. A span must be produced by one of the services in the list
     * `tags` - a map of attributes and values which span must have to be logged. If at least one attribute is not matched, the span is not logged.
-    * `mapping` - map with string key and list of strings value. The parameter contains a mapping between graylog field name and a list of span attributes which must be recorded in the field. Specific naming for graylog fields is supported: `__message__`, `__host__`, `__timestamp__`. Specific names for non-attribute data inside spans are also supported: `__spanId__`, `__traceId__`, `__name__`, `__end_timestamp__`, `__start_timestamp__`, `__kind__`, `__parentSpanId__`, `__startTime__`, `__endTime__`.
+    * `mapping` - map with string key and list of strings value. The parameter contains a mapping between graylog field
+      name and a list of span attributes which must be recorded in the field. Specific naming for graylog fields is
+      supported: `__message__`, `__host__`, `__timestamp__`. Specific names for non-attribute data inside spans are also
+      supported: `__spanId__`, `__traceId__`, `__name__`, `__end_timestamp__`, `__start_timestamp__`, `__kind__`,
+      `__parentSpanId__`, `__startTime__`, `__endTime__`.
   * `trace-filters` (`optional`) - Contains a list of ATL filters for traces. Trace which satisfy at least one filter will be sent to the graylog. Filter consists of two conditions below.
-      * `service-names` - a list of service names. A trace must be produced by one of the services in the list
-      * `tags` - a map of attributes and values which trace must have to be logged. If at least one attribute is not matched, the trace is not logged.
+    * `service-names` - a list of service names. A trace must be produced by one of the services in the list
+    * `tags` - a map of attributes and values which trace must have to be logged. If at least one attribute is not matched, the trace is not logged.
 * `connection-pool-size` (`optional`) - Connection pool size for the graylog. Default value is 1.
 * `queue-size` (`optional`) - Size of the queue of messages before sendining them to the graylog.
 * `max-message-send-retry-count` (`optional`) - message is skipped after this number of retries to send it to the graylog. Default value is 1.
