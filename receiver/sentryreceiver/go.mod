@@ -51,4 +51,3 @@ require (
 	google.golang.org/protobuf v1.36.5 // indirect
 )
 
-replace github.com/Netcracker/qubership-open-telemetry-collector/utils => ..\..\utils

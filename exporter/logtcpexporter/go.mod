@@ -2,8 +2,6 @@ module github.com/Netcracker/qubership-open-telemetry-collector/exporter/logtcpe
 
 go 1.23.5
 
-replace github.com/Netcracker/qubership-open-telemetry-collector/utils => ..\..\utils
-
 require (
 	github.com/Jeffail/gabs v1.4.0
 	github.com/Netcracker/qubership-open-telemetry-collector/utils v0.0.0-00010101000000-000000000000

@@ -2,7 +2,7 @@
 
 ## Envelope
 
-**Envelope** - http/grpc/etc request with body in [ndjson](https://ndjson.org/libraries.html) format.
+**Envelope** - http/grpc/etc request with body in [ndjson](https://github.com/ndjson/ndjson.github.io/blob/master/libraries.html) format.
 
 Usually it has structure like:
 
@@ -74,26 +74,26 @@ LogTCP Exporter allows to log certain data from sentry envelopes to the Graylog.
 
 ### `type: "event"`
 
-| Event field                           | Graylog field                  | Description                                                                             | Comment                                                  |
-| ------------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| `contexts.trace.span_id`              | `span_id`                      |                                                                                         |                                                          |
-| `contexts.trace.trace_id`             | `trace_id`                     |                                                                                         |                                                          |
-| `'frontend'`                          | `component`                    |                                                                                         |                                                          |
-| `level` (need to map to the level_id) | `level`                        |                                                                                         |                                                          |
-| `'open-telemetry-collector'`          | `facility`                     |                                                                                         |                                                          |
-| `{sdk.name}@{sdk.version}`            | `sdk`?                         |                                                                                         |                                                          |
-| `message` or `context.Error.*` or `exception.values` or constant `empty_message` | `message` |                                                                   |                                                          |
-| `exception.values`                    | `stacktrace` or `full_message` | `exception.values` - list of chained exceptions, they are should be joined to one line. | https://develop.sentry.dev/sdk/event-payloads/exception/ |
-| `timestamp`                           | `time`,`timestamp`             |                                                                                         |                                                          |
-| `event_id`                            | `event_id`                     |                                                                                         |                                                          |
-| `release` or constant `empty_version` | `version`                      |                                                                                         |                                                          |
-| `req.headers.x-service-id`            | `name`                         |                                                                                         |                                                          |
-| `platform`                            | `platform`                     |                                                                                         |                                                          |
-| `user.id`                             | `user_id`                      |                                                                                         | _new field_                                              |
-| `tags.transaction`                    | `transaction`                  |                                                                                         | _new field_                                              |
-| `logger`                              | `category`                     | if logger present, use it in category field. Otherwise use `frontend-event` value       | _new field_                                              |
-| `request.url`                         | `url`                          |                                                                                         | _new field_                                              |
-| `request.headers.User-Agent`          | `browser`                      |                                                                                         | _new field_                                              |
+| Event field                           | Graylog field                  | Description                                                                             | Comment                                                                                                              |
+| ------------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------- |----------------------------------------------------------------------------------------------------------------------|
+| `contexts.trace.span_id`              | `span_id`                      |                                                                                         |                                                                                                                      |
+| `contexts.trace.trace_id`             | `trace_id`                     |                                                                                         |                                                                                                                      |
+| `'frontend'`                          | `component`                    |                                                                                         |                                                                                                                      |
+| `level` (need to map to the level_id) | `level`                        |                                                                                         |                                                                                                                      |
+| `'open-telemetry-collector'`          | `facility`                     |                                                                                         |                                                                                                                      |
+| `{sdk.name}@{sdk.version}`            | `sdk`?                         |                                                                                         |                                                                                                                      |
+| `message` or `context.Error.*` or `exception.values` or constant `empty_message` | `message` |                                                                   |                                                                                                                      |
+| `exception.values`                    | `stacktrace` or `full_message` | `exception.values` - list of chained exceptions, they are should be joined to one line. | [https://develop.sentry.dev/sdk/event-payloads/exception/](https://develop.sentry.dev/sdk/event-payloads/exception/) |
+| `timestamp`                           | `time`,`timestamp`             |                                                                                         |                                                                                                                      |
+| `event_id`                            | `event_id`                     |                                                                                         |                                                                                                                      |
+| `release` or constant `empty_version` | `version`                      |                                                                                         |                                                                                                                      |
+| `req.headers.x-service-id`            | `name`                         |                                                                                         |                                                                                                                      |
+| `platform`                            | `platform`                     |                                                                                         |                                                                                                                      |
+| `user.id`                             | `user_id`                      |                                                                                         | _new field_                                                                                                          |
+| `tags.transaction`                    | `transaction`                  |                                                                                         | _new field_                                                                                                          |
+| `logger`                              | `category`                     | if logger present, use it in category field. Otherwise use `frontend-event` value       | _new field_                                                                                                          |
+| `request.url`                         | `url`                          |                                                                                         | _new field_                                                                                                          |
+| `request.headers.User-Agent`          | `browser`                      |                                                                                         | _new field_                                                                                                          |
 
 In case **`event.level == "error"`** the `breadcrumbs` of `event` are also logged as separate log records.
 
@@ -134,14 +134,14 @@ Envelopes with type `session` are not logged to the logging system.
 
 SentryMetrics Connector allows to generate metrics for each type of sentry envelopes below:  
 
-### `type: "session"`
+### `type: "session"` (Metrics)
 
 - sentry_session_exited_count - allows to monitor amount of unique sessions with `status: "exited"` when session ends.
 
-### `type: "transaction"`
+### `type: "transaction"` (Metrics)
 
 - sentry_measurements_statistic - allows to monitor Browser Web Vitals - measurements and duration of transactions - for each `{transaction} {context.trace.op}`.
 
-### `type: "event"`
+### `type: "event"` (Metrics)
 
 - sentry_event_count - allows to monitor amount of sentry events by `event.level`
