@@ -5,7 +5,11 @@ updates:
   schedule:
     interval: "monthly"
 - package-ecosystem: "gomod"
-  directory: "/"
+  directories:
+  - "/connector/*"
+  - "/exporter/*"
+  - "/receiver/*"
+  - "/utils"
   schedule:
     interval: "monthly"
   groups:
@@ -15,6 +19,9 @@ updates:
     go.opentelemetry.io:
       patterns:
       - "go.opentelemetry.io/*"
+    google.golang.org:
+      patterns:
+      - "google.golang.org/*"
   open-pull-requests-limit: 20
 - package-ecosystem: "docker"
   directories:
