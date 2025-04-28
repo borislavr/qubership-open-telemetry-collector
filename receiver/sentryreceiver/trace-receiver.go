@@ -126,7 +126,7 @@ func (sr *sentrytraceReceiver) Start(ctx context.Context, host component.Host) e
 	return nil
 }
 
-func (sr *sentrytraceReceiver) Shutdown(ctx context.Context) error {
+func (sr *sentrytraceReceiver) Shutdown(_ context.Context) error {
 	sr.logger.Info("SentryReceiver is shutdown")
 
 	return nil
