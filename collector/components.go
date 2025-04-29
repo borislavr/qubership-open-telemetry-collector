@@ -54,7 +54,7 @@ func components() (otelcol.Factories, error) {
 		return otelcol.Factories{}, err
 	}
 	factories.ReceiverModules = make(map[component.Type]string, len(factories.Receivers))
-	factories.ReceiverModules[sentryreceiver.NewFactory().Type()] = "github.com/Netcracker/qubership-open-telemetry-collector/receiver/sentryreceiver add-tailbased-tracing"
+	factories.ReceiverModules[sentryreceiver.NewFactory().Type()] = "github.com/Netcracker/qubership-open-telemetry-collector/receiver/sentryreceiver main"
 	factories.ReceiverModules[jaegerreceiver.NewFactory().Type()] = "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/jaegerreceiver latest"
 	factories.ReceiverModules[zipkinreceiver.NewFactory().Type()] = "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/zipkinreceiver latest"
 	factories.ReceiverModules[otlpreceiver.NewFactory().Type()] = "go.opentelemetry.io/collector/receiver/otlpreceiver latest"
@@ -70,7 +70,7 @@ func components() (otelcol.Factories, error) {
 		return otelcol.Factories{}, err
 	}
 	factories.ExporterModules = make(map[component.Type]string, len(factories.Exporters))
-	factories.ExporterModules[logtcpexporter.NewFactory().Type()] = "github.com/Netcracker/qubership-open-telemetry-collector/exporter/logtcpexporter add-tailbased-tracing"
+	factories.ExporterModules[logtcpexporter.NewFactory().Type()] = "github.com/Netcracker/qubership-open-telemetry-collector/exporter/logtcpexporter main"
 	factories.ExporterModules[prometheusexporter.NewFactory().Type()] = "github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter latest"
 	factories.ExporterModules[debugexporter.NewFactory().Type()] = "go.opentelemetry.io/collector/exporter/debugexporter latest"
 	factories.ExporterModules[otlpexporter.NewFactory().Type()] = "go.opentelemetry.io/collector/exporter/otlpexporter latest"
@@ -99,7 +99,7 @@ func components() (otelcol.Factories, error) {
 		return otelcol.Factories{}, err
 	}
 	factories.ConnectorModules = make(map[component.Type]string, len(factories.Connectors))
-	factories.ConnectorModules[sentrymetricsconnector.NewFactory().Type()] = "github.com/Netcracker/qubership-open-telemetry-collector/connector/sentrymetricsconnector add-tailbased-tracing"
+	factories.ConnectorModules[sentrymetricsconnector.NewFactory().Type()] = "github.com/Netcracker/qubership-open-telemetry-collector/connector/sentrymetricsconnector main"
 	factories.ConnectorModules[spanmetricsconnector.NewFactory().Type()] = "github.com/open-telemetry/opentelemetry-collector-contrib/connector/spanmetricsconnector latest"
 
 	return factories, nil

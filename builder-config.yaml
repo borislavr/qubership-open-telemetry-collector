@@ -6,11 +6,11 @@ dist:
   output_path: ./collector
 
 connectors:
-  - gomod: github.com/Netcracker/qubership-open-telemetry-collector/connector/sentrymetricsconnector add-tailbased-tracing
+  - gomod: github.com/Netcracker/qubership-open-telemetry-collector/connector/sentrymetricsconnector main
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/connector/spanmetricsconnector latest
 
 exporters:
-  - gomod: github.com/Netcracker/qubership-open-telemetry-collector/exporter/logtcpexporter add-tailbased-tracing
+  - gomod: github.com/Netcracker/qubership-open-telemetry-collector/exporter/logtcpexporter main
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter latest
   - gomod: go.opentelemetry.io/collector/exporter/debugexporter latest
   - gomod: go.opentelemetry.io/collector/exporter/otlpexporter latest
@@ -34,7 +34,7 @@ providers:
   - gomod: go.opentelemetry.io/collector/confmap/provider/yamlprovider latest
 
 receivers:
-  - gomod: github.com/Netcracker/qubership-open-telemetry-collector/receiver/sentryreceiver add-tailbased-tracing
+  - gomod: github.com/Netcracker/qubership-open-telemetry-collector/receiver/sentryreceiver main
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/jaegerreceiver latest
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/zipkinreceiver latest
   - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver latest
