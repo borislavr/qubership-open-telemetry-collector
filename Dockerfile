@@ -1,5 +1,11 @@
 # Stage 1: Build
-FROM golang:1.24.2-alpine3.21 AS builder
+FROM --platform=$BUILDPLATFORM golang:1.24.2-alpine3.21 AS builder
+ARG BUILDPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
+ARG GOPROXY=""
+ENV GOSUMDB=off \
+    GO111MODULE=on
 
 ARG OTEL_VERSION=0.124.0
 
@@ -17,15 +23,16 @@ COPY ./utils ./utils
 RUN go install go.opentelemetry.io/collector/cmd/builder@v${OTEL_VERSION} \
     && CGO_ENABLED=0 builder --config=builder-config.yaml
 
-# Stage 2: Final Image
-FROM alpine:3.21
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -a -o qubership-open-telemetry-collector .
+
+FROM alpine:3.21.3
 
 ENV USER_ID=65534
 
 WORKDIR /app
 
 # Copy the generated collector binary from the builder stage
-COPY --from=builder /build/collector/qubership-otec /app/qubership-otec
+COPY --from=builder --chown=${USER_ID} /build/collector/qubership-otec /app/qubership-otec
 
 # Copy the configuration file
 #COPY config.yaml .
