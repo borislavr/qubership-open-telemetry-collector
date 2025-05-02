@@ -51,10 +51,21 @@ Extension:
 * [healthcheckextension](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/extension/healthcheckextension/README.md)
 * [pprofextension](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/extension/pprofextension/README.md)
 
-Also there are custom implementations for
-
-* [logtcpexporter](exporter/logtcpexporter), see also the [document](docs/sentry-receiver.md#sentry-envelope-to-logs-records-graylog-mapping)
-* [sentrymetricsconnector](connector/sentrymetricsconnector), see also the [document](docs/sentry-receiver.md#sentry-envelope-to-metrics)
-* [sentryreceiver](receiver/sentryreceiver), see also the [document](docs/sentry-receiver.md#sentry-envelope-mapping-to-jaeger-traces)
-
 All third-party and custom modules are listed in [builder-config.yaml](builder-config.yaml).
+
+## Custom module
+
+Also there are custom implementations receive Sentry traces (as Sentry envelop), process them and send
+to Tracing and Logging exporters.
+
+Receivers:
+
+* [sentryreceiver](receiver/sentryreceiver/README.md), see also the [document](docs/sentry-receiver.md#sentry-envelope-mapping-to-jaeger-traces)
+
+Connectors:
+
+* [logtcpexporter](exporter/logtcpexporter/README.md), see also the [document](docs/sentry-receiver.md#sentry-envelope-to-logs-records-graylog-mapping)
+
+Exporters:
+
+* [sentrymetricsconnector](connector/sentrymetricsconnector/README.md), see also the [document](docs/sentry-receiver.md#sentry-envelope-to-metrics)
