@@ -22,6 +22,7 @@ extensions:
 
 processors:
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/processor/filterprocessor latest
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/processor/probabilisticsamplerprocessor latest
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/processor/tailsamplingprocessor latest
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/processor/transformprocessor latest
   - gomod: go.opentelemetry.io/collector/processor/batchprocessor latest
