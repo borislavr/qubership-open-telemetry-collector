@@ -60,12 +60,12 @@ to Tracing and Logging exporters.
 
 Receivers:
 
-* [sentryreceiver](receiver/sentryreceiver), see also the [document](docs/sentry-receiver.md#sentry-envelope-mapping-to-jaeger-traces)
+* [sentryreceiver](receiver/sentryreceiver/README.md), see also the [document](docs/sentry-receiver.md#sentry-envelope-mapping-to-jaeger-traces)
 
 Connectors:
 
-* [logtcpexporter](exporter/logtcpexporter), see also the [document](docs/sentry-receiver.md#sentry-envelope-to-logs-records-graylog-mapping)
+* [logtcpexporter](exporter/logtcpexporter/README.md), see also the [document](docs/sentry-receiver.md#sentry-envelope-to-logs-records-graylog-mapping)
 
 Exporters:
 
-* [sentrymetricsconnector](connector/sentrymetricsconnector), see also the [document](docs/sentry-receiver.md#sentry-envelope-to-metrics)
+* [sentrymetricsconnector](connector/sentrymetricsconnector/README.md), see also the [document](docs/sentry-receiver.md#sentry-envelope-to-metrics)
