@@ -1,4 +1,4 @@
-// Copyright 2024 Qubership
+// Copyright 2025 Qubership
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
 package graylog
 
 import (
+	"context"
 	"encoding/json"
-	"runtime/debug"
 	"fmt"
 	"net"
+	"runtime/debug"
 	"time"
-	"context"
 
-	"go.uber.org/zap"
 	"github.com/Jeffail/gabs"
+	"go.uber.org/zap"
 )
 
 type Transport string
@@ -40,10 +40,10 @@ type Endpoint struct {
 }
 
 type GraylogSender struct {
-	ctx       context.Context
-	endpoint  Endpoint
-	msgQueue  chan *Message
-	logger    *zap.Logger
+	ctx                         context.Context
+	endpoint                    Endpoint
+	msgQueue                    chan *Message
+	logger                      *zap.Logger
 	maxMessageSendRetryCnt      int
 	maxSuccessiveSendErrCnt     int
 	successiveSendErrFreezeTime time.Duration
@@ -60,25 +60,25 @@ type Message struct {
 }
 
 func NewGraylogSender(
-		endpoint Endpoint,
-		logger *zap.Logger,
-		connPullSize int,
-		queueSize int,
-		maxMessageSendRetryCnt int,
-		maxSuccessiveSendErrCnt int,
-		successiveSendErrFreezeTime time.Duration,
-	) *GraylogSender {
+	endpoint Endpoint,
+	logger *zap.Logger,
+	connPullSize int,
+	queueSize int,
+	maxMessageSendRetryCnt int,
+	maxSuccessiveSendErrCnt int,
+	successiveSendErrFreezeTime time.Duration,
+) *GraylogSender {
 	result := GraylogSender{
-		endpoint: endpoint,
-		logger: logger,
-		msgQueue: make(chan *Message, queueSize),
-		maxMessageSendRetryCnt: maxMessageSendRetryCnt,
-		maxSuccessiveSendErrCnt: maxSuccessiveSendErrCnt,
+		endpoint:                    endpoint,
+		logger:                      logger,
+		msgQueue:                    make(chan *Message, queueSize),
+		maxMessageSendRetryCnt:      maxMessageSendRetryCnt,
+		maxSuccessiveSendErrCnt:     maxSuccessiveSendErrCnt,
 		successiveSendErrFreezeTime: successiveSendErrFreezeTime,
-		ctx: context.Background(),
+		ctx:                         context.Background(),
 	}
 
-	for i := 0 ; i < connPullSize; i++ {
+	for i := 0; i < connPullSize; i++ {
 		i := i
 		go result.tcpConnGoroutine(i)
 	}
@@ -115,14 +115,14 @@ func (gs *GraylogSender) tcpConnGoroutine(connNumber int) {
 		for {
 			var data []byte
 			if messageRetryCnt > MAX_RETRY_CNT {
-				gs.logger.Sugar().Errorf("GraylogTcpConnection : Message %+v is skipped after %v retries in the goroutine #%v", retryData, messageRetryCnt - 1, connNumber)
+				gs.logger.Sugar().Errorf("GraylogTcpConnection : Message %+v is skipped after %v retries in the goroutine #%v", retryData, messageRetryCnt-1, connNumber)
 				retryData = nil
 			}
 			if retryData != nil {
 				data = *retryData
 				gs.logger.Sugar().Infof("GraylogTcpConnection : Retry %v sending message in the goroutine #%v", messageRetryCnt, connNumber)
 			} else {
-				msg, ok := <- gs.msgQueue
+				msg, ok := <-gs.msgQueue
 				if !ok {
 					gs.logger.Sugar().Errorf("GraylogTcpConnection : Message chan is closed, stopping the goroutine #%v", connNumber)
 					return
