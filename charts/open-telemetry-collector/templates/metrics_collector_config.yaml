@@ -26,6 +26,10 @@ data:
             endpoint: ":4317"
           http:
             endpoint: ":4318"
+      {{- if .Values.ZIPKIN_RECEIVER_PORT }}
+      zipkin:
+        endpoint: ":{{.Values.ZIPKIN_RECEIVER_PORT }}"
+      {{- end }}
     exporters:
       prometheus:
         endpoint: ":8889"
@@ -71,7 +75,11 @@ data:
       extensions: [health_check, pprof]
       pipelines:
         traces:
+          {{- if .Values.ZIPKIN_RECEIVER_PORT}}
+          receivers: [jaeger, otlp, zipkin]
+          {{- else }}
           receivers: [jaeger, otlp]
+          {{- end }}
           {{- if .Values.OTEC_TAILBASED_GENERAL_PARAMETERS}}
           processors: [batch, tail_sampling]
           {{- else }}
