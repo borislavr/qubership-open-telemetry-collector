@@ -16,13 +16,16 @@ env:
   max_attempts: 30
   delay: 10
 
+permissions:
+  contents: read
+
 jobs:
   Run-Integration-Tests-Prometheus-Remote-Write-Exporter:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - name: Checkout code otel-collecor
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           path: qubership-open-telemetry-collector
 
