@@ -24,11 +24,11 @@ jobs:
     if: (github.event.pull_request.merged == false) && (github.event.pull_request.user.login != 'dependabot[bot]') && (github.event.pull_request.user.login != 'github-actions[bot]')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: "Execute assign labels"
         id: action-assign-labels
-        uses: mauroalderete/action-assign-labels@v1
+        uses: mauroalderete/action-assign-labels@671a4ca2da0f900464c58b8b5540a1e07133e915 # v1.5.1
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
           github-token: ${{ github.token }}
