@@ -18,6 +18,29 @@ on:
         required: false
         type: boolean
         default: false
+  release:
+    types: [created]
+  push:
+    branches:
+    - '**'
+    paths-ignore:
+    - '.github/**'
+    - 'docs/**'
+    - 'CODE-OF-CONDUCT.md'
+    - 'CONTRIBUTING.md'
+    - 'LICENSE'
+    - 'README.md'
+    - 'SECURITY.md'
+  pull_request:
+    branches:
+    - '**'
+    paths-ignore:
+    - 'docs/**'
+    - 'CODE-OF-CONDUCT.md'
+    - 'CONTRIBUTING.md'
+    - 'LICENSE'
+    - 'README.md'
+    - 'SECURITY.md'
 permissions:
   contents: read
 
@@ -69,6 +92,6 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           checkout: "false"
           tags: ${{ steps.prepare_tags.outputs.tags }}
-          dry-run: ${{ github.event.inputs.dry-run }}
+          dry-run: ${{ github.event.inputs.dry-run || 'false' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
