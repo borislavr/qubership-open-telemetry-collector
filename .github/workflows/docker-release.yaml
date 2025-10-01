@@ -1,0 +1,67 @@
+# This Docker Build and Publish GitHub Action automates the process of building and publishing Docker images using Docker Buildx.
+# It supports multi-platform builds, custom tagging, and integration with GitHub Container Registry.
+# See more details in the [GitHub Action documentation](https://github.com/netcracker/qubership-workflow-hub/blob/main/actions/docker-action/README.md)
+# The workflow is triggered on pushes to the main branch and can also be manually triggered using `workflow_dispatch`.
+# The workflow includes a job that checks out the repository, builds the Docker image, and publishes it to a specified registry.
+
+name: Build and Publish Docker Image
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      custom-image-name:
+        description: 'Custom image name'
+        required: false
+        default: ''
+      platforms:
+        description: 'Platforms'
+        required: false
+        type: string
+        default: 'linux/amd64,linux/arm64'
+      tags:
+        description: 'Tags (version)'
+        required: true
+        type: string
+        default: ''
+      dry-run:
+        description: 'Dry run'
+        required: false
+        type: boolean
+        default: false
+permissions:
+  contents: read
+
+jobs:
+  build-and-push:
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Prepare Tags
+        id: prepare_tags
+        uses: netcracker/qubership-workflow-hub/actions/metadata-action@main
+        with:
+          extra-tags: ${{ github.event.inputs.tags || '' }}
+          default-tag: latest
+
+      - name: Build and Publish Docker Image
+        uses: netcracker/qubership-workflow-hub/actions/docker-action@80390cef83c5831867ecbc63dd599b0221eed9c2 #v1.0.7
+        with:
+          ref: main
+          custom-image-name: ${{ github.event.inputs.custom-image-name || '' }}
+          platforms: ${{ github.event.inputs.platforms || 'linux/amd64,linux/arm64' }}
+          tags: ${{ steps.prepare_tags.outputs.tags }}
+          dry-run: ${{ github.event.inputs.dry-run || 'false' }}
+          checkout: "false"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
